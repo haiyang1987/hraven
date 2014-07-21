@@ -65,10 +65,10 @@ create_pidfile $HRAVEN_PID_DIR
 trap 'cleanup_pidfile_and_exit $HRAVEN_PID_DIR' INT TERM EXIT
 
 # Pre-process
-$home/jobFilePreprocessor.sh $hadoopconfdir $historyRawDir $historyProcessingDir $cluster $batchsize $defaultrawfilesizelimit
+$home/jobFilePreprocessor.sh $hadoopconfdir $historyRawDir $historyProcessingDir $cluster $batchsize $defaultrawfilesizelimit $HRAVEN_NAMESPACE
 
 # Load
-$home/jobFileLoader.sh $hadoopconfdir $mapredmaxsplitsize $schedulerpoolname $cluster $historyProcessingDir
+$home/jobFileLoader.sh $hadoopconfdir $mapredmaxsplitsize $schedulerpoolname $cluster $historyProcessingDir $HRAVEN_NAMESPACE
 
 # Process
-$home/jobFileProcessor.sh $hbaseconfdir $schedulerpoolname $historyProcessingDir $cluster $threads $batchsize $machinetype $costfile
+$home/jobFileProcessor.sh $hbaseconfdir $schedulerpoolname $historyProcessingDir $cluster $threads $batchsize $machinetype $costfile $HRAVEN_NAMESPACE

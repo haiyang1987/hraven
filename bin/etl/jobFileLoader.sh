@@ -19,9 +19,9 @@
 # Usage ./jobFileLoader.sh [hadoopconfdir]
 #	[maxsplitsize] [schedulerpoolname] [cluster] [historyprocessingdir]
 
-if [ $# -ne 5 ]
+if [ $# -ne 6 ]
 then
-  echo "Usage: `basename $0` [hadoopconfdir] [maxsplitsize] [schedulerpoolname] [cluster] [historyprocessingdir]"
+  echo "Usage: `basename $0` [hadoopconfdir] [maxsplitsize] [schedulerpoolname] [cluster] [historyprocessingdir] [hravennamespace]"
   exit 1
 fi
 
@@ -38,4 +38,4 @@ fi
 create_pidfile $HRAVEN_PID_DIR
 trap 'cleanup_pidfile_and_exit $HRAVEN_PID_DIR' INT TERM EXIT
 
-hadoop --config $1 jar $hravenEtlJar com.twitter.hraven.etl.JobFileRawLoader -libjars=$LIBJARS -Dmapred.max.split.size=$2 -Dmapred.fairscheduler.pool=$3 -d -c $4 -p $5
+hadoop --config $1 jar $hravenEtlJar com.twitter.hraven.etl.JobFileRawLoader -libjars=$LIBJARS -Dmapred.max.split.size=$2 -Dmapred.fairscheduler.pool=$3 -d -c $4 -p $5 -n $6
