@@ -159,7 +159,7 @@ public class HdfsStatsService {
       for (Result result : scanner) {
         if (result != null && !result.isEmpty()) {
           colCount += result.size();
-          resultSize += result.getWritableSize();
+          resultSize += result.getRow().length;
           rowCount = populateHdfsStats(result, hdfsStats, checkPath, path, starttime, endtime, rowCount);
           // return if we've already hit the limit
           if (rowCount >= maxCount) {

@@ -138,7 +138,7 @@ public class AppSummaryService {
         if (result != null && !result.isEmpty()) {
           rowCount++;
           colCount += result.size();
-          resultSize += result.getWritableSize();
+          resultSize += result.getRow().length;
           AppKey appKey = getNewAppKeyFromResult(result, startTime, endTime);
           if(appKey != null) {
             newAppsKeys.add(appKey);

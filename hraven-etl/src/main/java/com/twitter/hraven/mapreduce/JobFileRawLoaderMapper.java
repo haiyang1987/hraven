@@ -75,7 +75,7 @@ public class JobFileRawLoaderMapper extends
   /**
    * @return the value class for the job output data.
    */
-  public static Class<? extends Writable> getOutputValueClass() {
+  public static Class<Put> getOutputValueClass() {
     return Put.class;
   }
 

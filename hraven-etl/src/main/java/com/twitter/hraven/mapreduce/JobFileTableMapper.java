@@ -33,7 +33,6 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.Mapper;
 import com.twitter.hraven.Constants;
@@ -103,7 +102,7 @@ public class JobFileTableMapper extends
   /**
    * @return the value class for the job output data.
    */
-  public static Class<? extends Writable> getOutputValueClass() {
+  public static Class<Put> getOutputValueClass() {
     return Put.class;
   }
 
@@ -279,7 +278,6 @@ public class JobFileTableMapper extends
               + (qualifiedJobId != null ? qualifiedJobId.toString() : ""),iae);
       success = false;
     }
-
     if (success) {
       // Update counter to indicate failure.
       HadoopCompat.incrementCounter(context.getCounter(ProcessingCounter.RAW_ROW_SUCCESS_COUNT), 1);

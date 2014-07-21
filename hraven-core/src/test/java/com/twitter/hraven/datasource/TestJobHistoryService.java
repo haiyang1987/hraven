@@ -31,6 +31,7 @@ import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -316,9 +317,9 @@ public class TestJobHistoryService {
   private void assertFoundOnce(byte[] column, Put jobPut, int expectedSize,
 		  String expectedValue) {
 	  boolean foundUserName = false;
-	  List<KeyValue> kv1 = jobPut.get(Constants.INFO_FAM_BYTES, column);
+	  List<Cell> kv1 = jobPut.get(Constants.INFO_FAM_BYTES, column);
 	  assertEquals(expectedSize, kv1.size());
-	  for (KeyValue kv : kv1) {
+	  for (Cell kv : kv1) {
 		assertEquals(Bytes.toString(kv.getValue()), expectedValue);
 	    // ensure we don't see the same put twice
 		assertFalse(foundUserName);

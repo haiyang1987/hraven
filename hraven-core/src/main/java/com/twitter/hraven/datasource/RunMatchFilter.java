@@ -95,14 +95,12 @@ public class RunMatchFilter extends FilterBase {
     return seenCount > maxCount;
   }
 
-  @Override
   public void write(DataOutput out) throws IOException {
     out.writeInt(appId.length);
     out.write(appId);
     out.writeInt(maxCount);
   }
 
-  @Override
   public void readFields(DataInput in) throws IOException {
     int appIdLength = in.readInt();
     this.appId = new byte[appIdLength];
