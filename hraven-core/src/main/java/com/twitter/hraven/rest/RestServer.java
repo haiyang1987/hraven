@@ -17,11 +17,13 @@ package com.twitter.hraven.rest;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
@@ -32,6 +34,7 @@ import org.mortbay.thread.QueuedThreadPool;
 import com.google.common.util.concurrent.AbstractIdleService;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
+import com.twitter.hraven.Constants;
 
 /**
  * Simple REST server that spawns an embedded Jetty instance to service requests
@@ -102,6 +105,14 @@ public class RestServer extends AbstractIdleService {
     Options opts = new Options();
     opts.addOption("p", "port", true, "Port for server to bind to (default 8080)");
     opts.addOption("a", "address", true, "IP address for server to bind to (default 0.0.0.0)");
+
+    // Namespace
+    Option o = new Option("n", "namespace", true,
+        "namespace of hraven hbase tables");
+    o.setArgName("namespace");
+    o.setRequired(false);
+    opts.addOption(o);
+
     CommandLine cmd = null;
     try {
       cmd = new PosixParser().parse(opts, args);
@@ -125,6 +136,12 @@ public class RestServer extends AbstractIdleService {
     if (cmd.hasOption("a")) {
       address = cmd.getOptionValue("a");
     }
+    // Set value of hbase namespace for hraven tables
+    if (cmd.hasOption("n")) {
+      Constants.HRAVEN_NAMESPACE = cmd.getOptionValue("n");
+      Constants.HRAVEN_NAMESPACE_BYTES = Bytes.toBytes(Constants.HRAVEN_NAMESPACE);
+    }
+
     RestServer server = new RestServer(address, port);
     server.startUp();
     // run until we're done

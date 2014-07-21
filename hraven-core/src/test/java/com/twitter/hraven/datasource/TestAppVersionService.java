@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
@@ -65,7 +66,8 @@ public class TestAppVersionService {
     byte[] appRow = Bytes.add(Bytes.add(clusterBytes, Constants.SEP_BYTES),
         Bytes.add(userBytes, Constants.SEP_BYTES),
         appIdBytes);
-    HTable versionTable = new HTable(c, Constants.HISTORY_APP_VERSION_TABLE);
+    HTable versionTable = new HTable(c,
+        TableName.valueOf(Constants.HRAVEN_NAMESPACE, Constants.HISTORY_APP_VERSION_TABLE));
 
     try {
       service.addVersion(cluster, user, appId, "v1", 1);

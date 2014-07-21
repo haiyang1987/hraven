@@ -29,6 +29,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
@@ -66,8 +67,8 @@ public class JobHistoryService {
 
   public JobHistoryService(Configuration myConf) throws IOException {
     this.myConf = myConf;
-    this.historyTable = new HTable(myConf, Constants.HISTORY_TABLE_BYTES);
-    this.taskTable = new HTable(myConf, Constants.HISTORY_TASK_TABLE_BYTES);
+    this.historyTable = new HTable(myConf, TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.HISTORY_TABLE_BYTES));
+    this.taskTable = new HTable(myConf, TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.HISTORY_TASK_TABLE_BYTES));
     this.idService = new JobHistoryByIdService(this.myConf);
     this.defaultScannerCaching = myConf.getInt("hbase.client.scanner.caching", 100);
   }

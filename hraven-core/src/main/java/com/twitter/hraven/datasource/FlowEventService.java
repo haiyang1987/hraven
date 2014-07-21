@@ -22,6 +22,7 @@ import com.twitter.hraven.FlowKey;
 import com.twitter.hraven.Framework;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -53,7 +54,8 @@ public class FlowEventService {
   private FlowEventKeyConverter keyConverter = new FlowEventKeyConverter();
 
   public FlowEventService(Configuration conf) throws IOException {
-    this.eventTable = new HTable(conf, Constants.FLOW_EVENT_TABLE_BYTES);
+    this.eventTable = new HTable(conf,
+        TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.FLOW_EVENT_TABLE_BYTES));
   }
 
   /**

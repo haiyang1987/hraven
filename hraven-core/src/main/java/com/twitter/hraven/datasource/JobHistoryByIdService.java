@@ -18,6 +18,7 @@ package com.twitter.hraven.datasource;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
@@ -42,7 +43,7 @@ public class JobHistoryByIdService {
 
   public JobHistoryByIdService(Configuration myHBaseConf) throws IOException {
     historyByJobIdTable = new HTable(myHBaseConf,
-        Constants.HISTORY_BY_JOBID_TABLE_BYTES);
+        TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.HISTORY_BY_JOBID_TABLE_BYTES));
   }
 
   /**

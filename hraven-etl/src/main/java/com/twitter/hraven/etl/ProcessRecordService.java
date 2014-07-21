@@ -34,6 +34,7 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.KeyValue;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -100,8 +101,9 @@ public class ProcessRecordService {
    *           in case we have problems connecting to HBase.
    */
   public ProcessRecordService(Configuration myHBaseConf) throws IOException {
-    processRecordTable = new HTable(myHBaseConf,
-        Constants.JOB_FILE_PROCESS_TABLE_BYTES);
+    processRecordTable = new HTable(myHBaseConf,TableName.valueOf(
+        Constants.HRAVEN_NAMESPACE_BYTES,
+        Constants.JOB_FILE_PROCESS_TABLE_BYTES));
     this.myHBaseConf = myHBaseConf;
     fs = FileSystem.get(myHBaseConf);
   }

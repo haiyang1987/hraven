@@ -38,6 +38,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -45,6 +46,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
 import com.twitter.hraven.Constants;
 import com.twitter.hraven.mapreduce.JobFileRawLoaderMapper;
 
@@ -118,6 +120,13 @@ public class JobFileRawLoader extends Configured implements Tool {
     o.setRequired(false);
     options.addOption(o);
 
+    // Namespace
+    o = new Option("n", "namespace", true,
+        "namespace of hraven hbase tables");
+    o.setArgName("namespace");
+    o.setRequired(false);
+    options.addOption(o);
+
     // Debugging
     options.addOption("d", "debug", false, "switch on DEBUG log level");
 
@@ -130,6 +139,12 @@ public class JobFileRawLoader extends Configured implements Tool {
       HelpFormatter formatter = new HelpFormatter();
       formatter.printHelp(NAME + " ", options, true);
       System.exit(-1);
+    }
+
+    // Set value of hbase namespace for hraven tables
+    if (commandLine.hasOption("n")) {
+      Constants.HRAVEN_NAMESPACE = commandLine.getOptionValue("n");
+      Constants.HRAVEN_NAMESPACE_BYTES = Bytes.toBytes(Constants.HRAVEN_NAMESPACE);
     }
 
     // Set debug level right away
@@ -298,8 +313,8 @@ public class JobFileRawLoader extends Configured implements Tool {
 
       // Set the output format to push data into HBase.
       job.setOutputFormatClass(TableOutputFormat.class);
-      TableMapReduceUtil.initTableReducerJob(Constants.HISTORY_RAW_TABLE, null,
-          job);
+      TableMapReduceUtil.initTableReducerJob(Constants.HRAVEN_NAMESPACE+":"+
+          Constants.HISTORY_RAW_TABLE, null, job);
 
       job.setOutputKeyClass(JobFileRawLoaderMapper.getOutputKeyClass());
       job.setOutputValueClass(JobFileRawLoaderMapper.getOutputValueClass());

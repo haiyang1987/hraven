@@ -31,6 +31,7 @@ import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.hbase.TableName;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +62,8 @@ public class TestJobHistoryService {
     UTIL = new HBaseTestingUtility();
     UTIL.startMiniCluster();
     HRavenTestUtil.createSchema(UTIL);
-    historyTable = new HTable(UTIL.getConfiguration(), Constants.HISTORY_TABLE_BYTES);
+    historyTable = new HTable(UTIL.getConfiguration(),
+        TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.HISTORY_TABLE_BYTES));
     idService = new JobHistoryByIdService(UTIL.getConfiguration());
     flowDataGen = new GenerateFlowTestData();
 

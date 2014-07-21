@@ -43,6 +43,11 @@ public class Constants {
   public static boolean IS_DEV = false;
   public static String PREFIX = IS_DEV ? "dev." : "";
 
+  /* **** Table namespace **** */
+  public static final String HRAVEN_DEFAULT_NAMESPACE = "hraven";
+  public static String HRAVEN_NAMESPACE = HRAVEN_DEFAULT_NAMESPACE;
+  public static byte[] HRAVEN_NAMESPACE_BYTES = Bytes.toBytes(HRAVEN_NAMESPACE);
+
   /* **** Table names **** */
   public static String HISTORY_TABLE = PREFIX + "job_history";
   public static byte[] HISTORY_TABLE_BYTES = Bytes.toBytes(HISTORY_TABLE);

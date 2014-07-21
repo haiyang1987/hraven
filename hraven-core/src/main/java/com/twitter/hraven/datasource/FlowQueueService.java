@@ -24,6 +24,7 @@ import com.twitter.hraven.util.ByteUtil;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.KeyValue;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
@@ -61,7 +62,8 @@ public class FlowQueueService {
   private HTable flowQueueTable;
 
   public FlowQueueService(Configuration conf) throws IOException {
-    this.flowQueueTable = new HTable(conf, Constants.FLOW_QUEUE_TABLE_BYTES);
+    this.flowQueueTable = new HTable(conf,
+        TableName.valueOf(Constants.HRAVEN_NAMESPACE_BYTES, Constants.FLOW_QUEUE_TABLE_BYTES));
   }
 
   public void updateFlow(FlowQueueKey key, Flow flow) throws IOException {

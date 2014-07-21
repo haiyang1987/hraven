@@ -69,11 +69,11 @@ public class JobFileTableMapper extends
   private static Log LOG = LogFactory.getLog(JobFileTableMapper.class);
 
   private static final ImmutableBytesWritable JOB_TABLE = new ImmutableBytesWritable(
-      Constants.HISTORY_TABLE_BYTES);
+      Bytes.toBytes(Constants.HRAVEN_NAMESPACE+":"+Constants.HISTORY_TABLE));
   private static final ImmutableBytesWritable TASK_TABLE = new ImmutableBytesWritable(
-      Constants.HISTORY_TASK_TABLE_BYTES);
+      Bytes.toBytes(Constants.HRAVEN_NAMESPACE+":"+Constants.HISTORY_TASK_TABLE));
   private static final ImmutableBytesWritable RAW_TABLE = new ImmutableBytesWritable(
-      Constants.HISTORY_RAW_TABLE_BYTES);
+      Bytes.toBytes(Constants.HRAVEN_NAMESPACE+":"+Constants.HISTORY_RAW_TABLE));
   private static JobKeyConverter jobKeyConv = new JobKeyConverter();
 
   /**

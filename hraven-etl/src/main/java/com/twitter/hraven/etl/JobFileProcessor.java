@@ -46,6 +46,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.mapreduce.MultiTableOutputFormat;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.Tool;
@@ -58,6 +59,7 @@ import com.twitter.hraven.datasource.JobHistoryRawService;
 import com.twitter.hraven.etl.ProcessRecordService;
 import com.twitter.hraven.datasource.RowKeyParseException;
 import com.twitter.hraven.mapreduce.JobFileTableMapper;
+import com.twitter.hraven.etl.MinMaxJobFileTracker;
 
 /**
  * Used to process one ProcessingRecord at at time. For each record an HBase job
@@ -166,6 +168,13 @@ public class JobFileProcessor extends Configured implements Tool {
     o.setRequired(true);
     options.addOption(o);
 
+    // Namespace
+    o = new Option("n", "namespace", true,
+        "namespace of hraven hbase tables");
+    o.setArgName("namespace");
+    o.setRequired(false);
+    options.addOption(o);
+
     CommandLineParser parser = new PosixParser();
     CommandLine commandLine = null;
     try {
@@ -175,6 +184,12 @@ public class JobFileProcessor extends Configured implements Tool {
       HelpFormatter formatter = new HelpFormatter();
       formatter.printHelp(NAME + " ", options, true);
       System.exit(-1);
+    }
+
+    // Set value of hbase namespace for hraven tables
+    if (commandLine.hasOption("n")) {
+      Constants.HRAVEN_NAMESPACE = commandLine.getOptionValue("n");
+      Constants.HRAVEN_NAMESPACE_BYTES = Bytes.toBytes(Constants.HRAVEN_NAMESPACE);
     }
 
     // Set debug level right away
@@ -611,7 +626,7 @@ public class JobFileProcessor extends Configured implements Tool {
     job.setJarByClass(JobFileProcessor.class);
     job.setOutputFormatClass(MultiTableOutputFormat.class);
 
-    TableMapReduceUtil.initTableMapperJob(Constants.HISTORY_RAW_TABLE, scan,
+    TableMapReduceUtil.initTableMapperJob(Constants.HRAVEN_NAMESPACE+":"+Constants.HISTORY_RAW_TABLE, scan,
         JobFileTableMapper.class, JobFileTableMapper.getOutputKeyClass(),
         JobFileTableMapper.getOutputValueClass(), job);
 
