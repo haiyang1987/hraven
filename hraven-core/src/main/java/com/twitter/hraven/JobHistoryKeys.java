@@ -77,6 +77,7 @@ public enum JobHistoryKeys {
   workflowName(String.class, null),
   workflowNodeName(String.class, null),
   workflowAdjacencies(String.class, null),
+  workflowTags(String.class, null),
   locality(String.class, null),
   avataar(String.class, null),
   nodeManagerHost(String.class, null),
